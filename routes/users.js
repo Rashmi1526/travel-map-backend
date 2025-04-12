@@ -1,13 +1,13 @@
 const User = require("./models/User");
 const router = require("express").Router();
-const bcrypt = require("bcrypt");
+const bcryptjs = require("bcryptjs");
 
 //REGISTER
 router.post("/register", async (req, res) => {
   try {
     //generate new password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(req.body.password, salt);
+    const salt = await bcryptjs.genSalt(10);
+    const hashedPassword = await bcryptjs.hash(req.body.password, salt);
 
     //create new user
     const newUser = new User({
@@ -33,7 +33,7 @@ router.post("/login", async (req, res) => {
     !user && res.status(400).json("Wrong username or password");
 
     //validate password
-    const validPassword = await bcrypt.compare(
+    const validPassword = await bcryptjs.compare(
       req.body.password,
       user.password
     );
